@@ -64,7 +64,7 @@
       return;
     }
 
-    return;
+    // return;
     const count = await Articles.sync();
     console.log(`Synced ${count} articles`);
 
