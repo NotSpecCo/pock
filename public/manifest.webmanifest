@@ -29,7 +29,7 @@
   "start_url": "/index.html",
   "orientation": "portrait-primary",
   "b2g_features": {
-    "version": "1.1.0",
+    "version": "1.2.0",
     "subtitle": "A Pocket client for KaiOS",
     "permissions": {
       "systemXHR": {
