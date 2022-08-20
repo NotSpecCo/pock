@@ -12,7 +12,7 @@
   import { Onyx } from 'onyx-ui/services';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
-  import { params } from 'svelte-spa-router';
+  import { params, push } from 'svelte-spa-router';
   import type { Article } from '../models';
   import { Articles } from '../services/articles';
 
@@ -110,7 +110,7 @@
               accentText={formatDistanceToNowStrict(new Date(article.updatedAt), {
                 addSuffix: true,
               })}
-              navi={{ itemId: article.id }}
+              navi={{ itemId: article.id, onSelect: () => push(`/articles/${article.id}`) }}
               contextMenu={buildContextMenu(article)}
             />
           {:else}

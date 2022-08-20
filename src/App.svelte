@@ -6,6 +6,7 @@
   import Router, { location, pop, replace } from 'svelte-spa-router';
   import AppMenu from './components/AppMenu.svelte';
   import AppSettings from './routes/AppSettings.svelte';
+  import ArticleDetail from './routes/ArticleDetail.svelte';
   import Filter from './routes/Filter.svelte';
   import Home from './routes/Home.svelte';
   import LogIn from './routes/LogIn.svelte';
@@ -30,6 +31,7 @@
     '/filter/:filterId': Filter,
     '/tags': Tags,
     '/tags/:tagId?': ViewTag,
+    '/articles/:articleId?': ArticleDetail,
     '/settings/:cardId': AppSettings,
     '*': Redirect,
   };
