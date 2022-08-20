@@ -3,7 +3,6 @@
   import { Priority } from 'onyx-ui/enums';
   import { KeyManager, Onyx } from 'onyx-ui/services';
   import { onMount } from 'svelte';
-  import FaSync from 'svelte-icons/fa/FaSync.svelte';
   import Router, { location, pop, replace } from 'svelte-spa-router';
   import AppMenu from './components/AppMenu.svelte';
   import AppSettings from './routes/AppSettings.svelte';
@@ -13,7 +12,7 @@
   import LogOut from './routes/LogOut.svelte';
   import Oauth from './routes/Oauth.svelte';
   import Redirect from './routes/Redirect.svelte';
-  import { Articles } from './services/articles';
+  import Sync from './routes/Sync.svelte';
   import { AuthClient } from './services/authClient';
   import { KaiAds } from './services/kaiAds';
   import { settings } from './stores/settings';
@@ -25,6 +24,7 @@
     '/login': LogIn,
     '/logout': LogOut,
     '/oauth': Oauth,
+    '/sync': Sync,
     '/filter/:filterId': Filter,
     '/settings/:cardId': AppSettings,
     '*': Redirect,
@@ -64,11 +64,7 @@
       return;
     }
 
-    // return;
-    const count = await Articles.sync();
-    console.log(`Synced ${count} articles`);
-
-    Onyx.toaster.show({ icon: FaSync, type: 'success', title: `Synced ${count} articles` });
+    replace('/sync');
   });
 
   $: Onyx.settings.update($settings);
