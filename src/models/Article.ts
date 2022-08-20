@@ -13,4 +13,5 @@ export type Article = {
   readAt: string;
   createdAt: string;
   updatedAt: string;
+  tags: string[];
 };

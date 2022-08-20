@@ -10,6 +10,7 @@
   import FaRegClock from 'svelte-icons/fa/FaRegClock.svelte';
   import FaRegStar from 'svelte-icons/fa/FaRegStar.svelte';
   import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte';
+  import FaTags from 'svelte-icons/fa/FaTags.svelte';
   import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
   import { push } from 'svelte-spa-router';
   import { AuthClient } from '../services/authClient';
@@ -27,6 +28,7 @@
         { id: 'recent', text: 'Recent', route: `/filter/recent`, icon: FaRegClock },
         { id: 'favorites', text: 'Favorites', route: `/filter/favorites`, icon: FaRegStar },
         { id: 'archive', text: 'Archive', route: `/filter/archive`, icon: FaArchive },
+        { id: 'tags', text: 'View Tags', route: `/tags`, icon: FaTags },
         { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
@@ -58,8 +60,8 @@
         }}
       />
     {/each}
-    <Divider title="System" />
-    {#each items.slice(3) as item, i}
+    <Divider title="Tags" />
+    {#each items.slice(3, 4) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
@@ -67,6 +69,26 @@
         navi={{
           itemId: item.id,
           shortcutKey: getShortcutFromIndex(i + 3),
+          onSelect: () => {
+            Onyx.appMenu.close();
+            if (window.location.hash.startsWith(`#${item.route}`)) {
+              updateView({ viewing: ViewState.Card });
+              return;
+            }
+            push(item.route);
+          },
+        }}
+      />
+    {/each}
+    <Divider title="System" />
+    {#each items.slice(4) as item, i}
+      <ListItem
+        icon={item.icon}
+        imageSize={IconSize.Smallest}
+        primaryText={item.text}
+        navi={{
+          itemId: item.id,
+          shortcutKey: getShortcutFromIndex(i + 4),
           onSelect: () => {
             Onyx.appMenu.close();
             if (window.location.hash.startsWith(`#${item.route}`)) {

@@ -22,4 +22,10 @@ export type PocketArticle = {
   sort_id: number;
   time_to_read: number;
   listen_duration_estimate: number;
+  tags: {
+    [key: string]: {
+      item_id: string;
+      tag: string;
+    };
+  };
 };

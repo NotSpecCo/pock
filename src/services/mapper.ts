@@ -15,6 +15,7 @@ export function toArticle(source: PocketArticle): Article {
     readAt: parseDate(source.time_read),
     createdAt: parseDate(source.time_added),
     updatedAt: parseDate(source.time_updated),
+    tags: Object.keys(source.tags ?? {}),
   };
 }
 

@@ -7,6 +7,7 @@ const database = new Database();
 
 type ArticleQuery = {
   ids?: string[];
+  tagId?: string;
   isArchived?: 0 | 1;
   isFavorite?: 0 | 1;
   offset?: number;
@@ -27,18 +28,29 @@ type ArticleSort = {
 };
 
 export class Articles {
-  static async sync(): Promise<number> {
-    const articles = await pocket.getAllArticles();
-
-    // Cache articles to the database
-    await database.deleteAllArticles();
-    await database.addArticles(articles);
-
-    return articles.length;
+  static fetchAll(): Promise<Article[]> {
+    return pocket.getAllArticles();
   }
 
-  static getById(id: string): Promise<Article | null> {
-    return database.getArticleById(id);
+  static async getById(id: string): Promise<Article | null> {
+    const item = await database.getArticleById(id);
+
+    if (!item) return null;
+
+    item.tags = await database
+      .getArticleTagsByItemId(item.id)
+      .then((res) => res.map((a) => a.tagId));
+
+    return item;
+  }
+
+  static async getAllByTagId(tagId: string): Promise<Article[]> {
+    const itemIds = await database
+      .getArticleTagsByTagId(tagId)
+      .then((res) => res.map((a) => a.itemId));
+    if (itemIds.length == 0) return [];
+
+    return database.getArticles({ ids: itemIds }, { sortKey: 'createdAt', sortDir: 'desc' });
   }
 
   static update(id: string, changes: Partial<Article>): Promise<Article> {
@@ -80,5 +92,33 @@ export class Articles {
   static async delete(id: string): Promise<void> {
     await pocket.delete(id);
     await database.deleteArticles([id]);
+  }
+
+  static async addTag(id: string, tagId: string): Promise<void> {
+    await pocket.addTags(id, [tagId]);
+
+    const exists = await database.getTagById(tagId);
+    if (!exists) {
+      await database.addTags([{ id: tagId, value: tagId }]);
+    }
+
+    await database.addArticleTags([{ id: undefined, itemId: id, tagId }]);
+  }
+
+  static async removeTag(id: string, tagId: string): Promise<void> {
+    await pocket.removeTags(id, [tagId]);
+    await database.deleteArticleTagsByItemAndTagId(id, tagId);
+  }
+
+  static async replaceTags(id: string, tagIds: string[]): Promise<void> {
+    await pocket.replaceTags(id, tagIds);
+    await database.deleteArticleTagsByItemId(id);
+    await database.addArticleTags(
+      tagIds.map((tagId) => ({
+        id: undefined,
+        tagId: tagId,
+        itemId: id,
+      }))
+    );
   }
 }

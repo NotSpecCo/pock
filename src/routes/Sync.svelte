@@ -14,16 +14,18 @@
   import FaSync from 'svelte-icons/fa/FaSync.svelte';
   import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte';
   import { replace } from 'svelte-spa-router';
-  import { Articles } from '../services/articles';
+  import { App } from '../services/app';
 
-  let syncStatus: 'inProgress' | 'success' | 'error' = 'inProgress';
+  let syncStatus: 'init' | 'inProgress' | 'success' | 'error' = 'init';
 
   registerView({});
 
   async function sync() {
+    if (syncStatus === 'inProgress') return;
+
     syncStatus = 'inProgress';
 
-    await Articles.sync()
+    await App.sync()
       .then((count) => {
         console.log(`Synced ${count} articles`);
         syncStatus = 'success';
@@ -38,9 +40,9 @@
   }
 
   onMount(async () => {
+    // replace('/filter/recent');
     // return;
-    sync();
-
+    await sync();
     updateView({ dataStatus: DataStatus.Loaded });
   });
 </script>

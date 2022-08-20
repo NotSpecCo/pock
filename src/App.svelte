@@ -13,6 +13,8 @@
   import Oauth from './routes/Oauth.svelte';
   import Redirect from './routes/Redirect.svelte';
   import Sync from './routes/Sync.svelte';
+  import Tags from './routes/Tags.svelte';
+  import ViewTag from './routes/ViewTag.svelte';
   import { AuthClient } from './services/authClient';
   import { KaiAds } from './services/kaiAds';
   import { settings } from './stores/settings';
@@ -26,6 +28,8 @@
     '/oauth': Oauth,
     '/sync': Sync,
     '/filter/:filterId': Filter,
+    '/tags': Tags,
+    '/tags/:tagId?': ViewTag,
     '/settings/:cardId': AppSettings,
     '*': Redirect,
   };

@@ -1,9 +1,10 @@
 import Dexie, { Collection } from 'dexie';
-import type { Article } from '../models';
+import type { Article, ArticleTagMap, Tag } from '../models';
 import { PerfLogger } from './perfLogger';
 
 type ArticleQuery = {
   ids?: string[];
+  tagId?: string;
   isArchived?: 0 | 1;
   isFavorite?: 0 | 1;
   offset?: number;
@@ -25,6 +26,8 @@ type ArticleSort = {
 
 export class Database extends Dexie {
   articles: Dexie.Table<Article, string>;
+  tags: Dexie.Table<Tag, string>;
+  articleTags: Dexie.Table<ArticleTagMap, number>;
 
   constructor() {
     super('pock');
@@ -32,9 +35,13 @@ export class Database extends Dexie {
     this.version(1).stores({
       articles:
         '&id, timeToRead, isArchived, isFavorite, createdAt, updatedAt, readAt, favoritedAt',
+      tags: '&id, value',
+      articleTags: '++id, itemId, tagId',
     });
 
     this.articles = this.table('articles');
+    this.articleTags = this.table('articleTags');
+    this.tags = this.table('tags');
   }
 
   // Articles
@@ -82,7 +89,7 @@ export class Database extends Dexie {
   }
 
   public async getArticles(
-    { ids, isArchived, isFavorite, offset = 0, limit = 50 }: ArticleQuery,
+    { ids, tagId, isArchived, isFavorite, offset = 0, limit = 50 }: ArticleQuery,
     { sortKey = 'createdAt', sortDir = 'desc' }: ArticleSort
   ): Promise<Article[]> {
     PerfLogger.start('database.getArticles');
@@ -92,6 +99,12 @@ export class Database extends Dexie {
 
     if (Array.isArray(ids)) {
       query = this.articles.where('id').anyOf(ids);
+    } else if (tagId !== undefined) {
+      const itemIds = await this.articleTags
+        .where({ tagId })
+        .toArray()
+        .then((res) => res.map((a) => a.itemId));
+      query = this.articles.where('id').anyOf(itemIds);
     } else if (isArchived !== undefined) {
       query = this.articles.where('isArchived').equals(isArchived);
     } else if (isFavorite !== undefined) {
@@ -122,5 +135,120 @@ export class Database extends Dexie {
     PerfLogger.stop('database.getArticles');
 
     return res;
+  }
+
+  // Articles <-> Tags
+
+  public async addArticleTags(items: ArticleTagMap[]): Promise<void> {
+    PerfLogger.start('database.addArticleTags');
+    await this.articleTags.bulkPut(items);
+    PerfLogger.stop('database.addArticleTags');
+  }
+
+  public async replaceArticleTags(itemId: string, tagIds: string[]): Promise<void> {
+    PerfLogger.start('database.replaceArticleTags');
+    await this.articleTags.where({ itemId }).delete();
+    if (tagIds.length > 0) {
+      await this.articleTags.bulkPut(tagIds.map((tagId) => ({ itemId, tagId, id: undefined })));
+    }
+    PerfLogger.stop('database.replaceArticleTags');
+  }
+
+  public async getArticleTagsByItemId(itemId: string): Promise<ArticleTagMap[]> {
+    PerfLogger.start('database.getArticleTagsByItemId');
+    const result = await this.articleTags.where({ itemId }).toArray();
+    PerfLogger.stop('database.getArticleTagsByItemId');
+    return result;
+  }
+
+  public async getArticleTagsByTagId(tagId: string): Promise<ArticleTagMap[]> {
+    PerfLogger.start('database.getArticleTagsByTagId');
+    const result = await this.articleTags.where({ tagId }).toArray();
+    PerfLogger.stop('database.getArticleTagsByTagId');
+    return result;
+  }
+
+  public async deleteAllArticleTags(): Promise<void> {
+    PerfLogger.start('database.deleteAllArticleTags');
+    await this.articleTags.clear();
+    PerfLogger.stop('database.deleteAllArticleTags');
+  }
+
+  public async deleteArticleTagsByItemId(itemId: string): Promise<void> {
+    PerfLogger.start('database.deleteArticleTagsByItemId');
+    await this.articleTags.where({ itemId }).delete();
+    PerfLogger.stop('database.deleteArticleTagsByItemId');
+  }
+
+  public async deleteArticleTagsByItemAndTagId(itemId: string, tagId: string): Promise<void> {
+    PerfLogger.start('database.deleteArticleTagsByItemId');
+    await this.articleTags.where({ itemId, tagId }).delete();
+    PerfLogger.stop('database.deleteArticleTagsByItemId');
+  }
+
+  // Tags
+
+  public async addTags(tags: Tag[]): Promise<void> {
+    PerfLogger.start('database.addTags');
+    await this.tags.bulkPut(tags);
+    PerfLogger.stop('database.addTags');
+  }
+
+  public async updateTag(id: string, changes: Partial<Tag>): Promise<void> {
+    PerfLogger.start('database.updateTag');
+    await this.tags.update(id, changes);
+    PerfLogger.stop('database.updateTag');
+  }
+
+  public async getAllTags(includeCounts = false): Promise<Tag[]> {
+    PerfLogger.start(`database.getAllTags`);
+    const result = await this.tags.toArray();
+
+    if (includeCounts) {
+      for (const tag of result) {
+        tag.itemCount = await this.articleTags.where({ tagId: tag.id }).count();
+      }
+    }
+
+    PerfLogger.stop(`database.getAllTags`);
+    return result;
+  }
+
+  public async getTagById(id: string, includeCounts = false): Promise<Tag | null> {
+    PerfLogger.start(`database.getTagById`);
+    const result = await this.tags.where({ id }).first();
+
+    if (includeCounts) {
+      result.itemCount = await this.articleTags.where({ tagId: result.id }).count();
+    }
+
+    PerfLogger.stop(`database.getTagById`);
+    return result;
+  }
+
+  public async getTagsByIds(ids: string[], includeCounts = false): Promise<Tag[]> {
+    PerfLogger.start(`database.getTagsByIds`);
+    const results = await this.tags.where('id').anyOf(ids).toArray();
+
+    if (includeCounts) {
+      for (const tag of results) {
+        tag.itemCount = await this.articleTags.where({ tagId: tag.id }).count();
+      }
+    }
+
+    PerfLogger.stop(`database.getTagsByIds`);
+    return results;
+  }
+
+  public async deleteTag(id: string): Promise<void> {
+    PerfLogger.start('database.deleteTag');
+    await this.tags.delete(id);
+    PerfLogger.stop('database.deleteTag');
+  }
+
+  public async deleteAllTags(): Promise<void> {
+    PerfLogger.start('database.deleteAllTags');
+    await this.tags.clear();
+    PerfLogger.stop('database.deleteAllTags');
   }
 }
