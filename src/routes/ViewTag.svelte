@@ -12,17 +12,19 @@
   import { Onyx } from 'onyx-ui/services';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
-  import { params, push } from 'svelte-spa-router';
+  import { push } from 'svelte-spa-router';
   import type { Article } from '../models';
   import { Articles } from '../services/articles';
+
+  export let params: { tagId: string };
 
   registerView({});
 
   let getArticles: Promise<Article[]>;
 
-  $: getData($params?.tagId);
+  $: refresh(params.tagId);
 
-  async function getData(tagId?: string) {
+  async function refresh(tagId?: string) {
     if (!tagId) {
       getArticles = Promise.resolve([]);
       return;
@@ -42,7 +44,7 @@
         label: 'Unarchive',
         onSelect: async () => {
           await Articles.unarchive(article.id);
-          getData($params.filterId);
+          refresh(params.tagId);
           Onyx.contextMenu.close();
         },
       });
@@ -51,7 +53,7 @@
         label: 'Archive',
         onSelect: async () => {
           await Articles.archive(article.id);
-          getData($params.filterId);
+          refresh(params.tagId);
           Onyx.contextMenu.close();
         },
       });
@@ -62,7 +64,7 @@
         label: 'Unfavorite',
         onSelect: async () => {
           await Articles.unfavorite(article.id);
-          getData($params.filterId);
+          refresh(params.tagId);
           Onyx.contextMenu.close();
         },
       });
@@ -71,7 +73,7 @@
         label: 'Favorite',
         onSelect: async () => {
           await Articles.favorite(article.id);
-          getData($params.filterId);
+          refresh(params.tagId);
           Onyx.contextMenu.close();
         },
       });
@@ -81,7 +83,7 @@
       label: 'Delete',
       onSelect: async () => {
         await Articles.delete(article.id);
-        getData($params.filterId);
+        refresh(params.tagId);
         Onyx.contextMenu.close();
       },
     });
@@ -98,7 +100,7 @@
 <View>
   <ViewContent>
     <Card>
-      <CardHeader title={`Tag: ${$params?.tagId}`} />
+      <CardHeader title={`Tag: ${params.tagId}`} />
       <CardContent>
         {#await getArticles}
           <Typography align="center">Loading...</Typography>

@@ -12,11 +12,11 @@
   import { Onyx } from 'onyx-ui/services';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
-  import { params, push } from 'svelte-spa-router';
+  import { push } from 'svelte-spa-router';
   import type { Article } from '../models';
   import { Articles } from '../services/articles';
 
-  type Filter = 'recent' | 'archive' | 'favorites';
+  export let params: { filterId: 'recent' | 'archive' | 'favorites' };
 
   registerView({});
 
@@ -24,9 +24,9 @@
   let accentTextKey: 'createdAt' | 'updatedAt' | 'favoritedAt' = 'createdAt';
   let getArticles: Promise<Article[]>;
 
-  $: getData($params?.filterId as Filter);
+  $: refresh(params.filterId);
 
-  async function getData(filterId?: Filter) {
+  async function refresh(filterId: string) {
     switch (filterId) {
       case 'archive':
         title = 'Archive';
@@ -62,7 +62,7 @@
         label: 'Unarchive',
         onSelect: async () => {
           await Articles.unarchive(article.id);
-          getData($params.filterId as Filter);
+          refresh(params.filterId);
           Onyx.contextMenu.close();
         },
       });
@@ -71,7 +71,7 @@
         label: 'Archive',
         onSelect: async () => {
           await Articles.archive(article.id);
-          getData($params.filterId as Filter);
+          refresh(params.filterId);
           Onyx.contextMenu.close();
         },
       });
@@ -82,7 +82,7 @@
         label: 'Unfavorite',
         onSelect: async () => {
           await Articles.unfavorite(article.id);
-          getData($params.filterId as Filter);
+          refresh(params.filterId);
           Onyx.contextMenu.close();
         },
       });
@@ -91,7 +91,7 @@
         label: 'Favorite',
         onSelect: async () => {
           await Articles.favorite(article.id);
-          getData($params.filterId as Filter);
+          refresh(params.filterId);
           Onyx.contextMenu.close();
         },
       });
@@ -101,7 +101,7 @@
       label: 'Delete',
       onSelect: async () => {
         await Articles.delete(article.id);
-        getData($params.filterId as Filter);
+        refresh(params.filterId);
         Onyx.contextMenu.close();
       },
     });

@@ -30,8 +30,8 @@
     '/sync': Sync,
     '/filter/:filterId': Filter,
     '/tags': Tags,
-    '/tags/:tagId?': ViewTag,
-    '/articles/:articleId?': ArticleDetail,
+    '/tags/:tagId': ViewTag,
+    '/articles/:articleId': ArticleDetail,
     '/settings/:cardId': AppSettings,
     '*': Redirect,
   };

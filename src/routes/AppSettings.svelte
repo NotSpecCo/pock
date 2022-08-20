@@ -12,10 +12,12 @@
   import { Animations, DataStatus, TextSize, TextWeight } from 'onyx-ui/enums';
   import { registerView, updateView, view } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
-  import { params, replace } from 'svelte-spa-router';
+  import { replace } from 'svelte-spa-router';
   import type { Settings } from '../models';
   import { settings } from '../stores/settings';
   import { themes } from '../themes';
+
+  export let params: { cardId: string };
 
   registerView({
     cards: [
@@ -35,7 +37,7 @@
         onSelect: () => replace(`/settings/lists`),
       },
     ],
-    activeCardId: $params?.cardId ?? 'display',
+    activeCardId: params.cardId,
   });
 
   onMount(async () => {
@@ -66,7 +68,7 @@
 
 <View>
   <ViewContent>
-    {#if $params?.cardId === $view.cards[0].id}
+    {#if params.cardId === $view.cards[0].id}
       <Card cardId={$view.cards[0].id}>
         <CardHeader />
         <CardContent>
@@ -139,14 +141,14 @@
           />
         </CardContent>
       </Card>
-    {:else if $params?.cardId === $view.cards[1].id}
+    {:else if params.cardId === $view.cards[1].id}
       <Card cardId={$view.cards[1].id}>
         <CardHeader />
         <CardContent>
           <Typography>Article settings</Typography>
         </CardContent>
       </Card>
-    {:else if $params?.cardId === $view.cards[2].id}
+    {:else if params.cardId === $view.cards[2].id}
       <Card cardId={$view.cards[2].id}>
         <CardHeader />
         <CardContent>
