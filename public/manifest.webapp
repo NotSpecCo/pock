@@ -2,7 +2,7 @@
   "id": "dev.nothing.pock",
   "name": "Pock",
   "description": "A Pocket client for KaiOS",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "launch_path": "/index.html",
   "icons": {
     "128": "/images/icon_128.png",
