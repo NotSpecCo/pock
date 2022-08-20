@@ -6,8 +6,8 @@ type ArticleQuery = {
   ids?: string[];
   isArchived?: 0 | 1;
   isFavorite?: 0 | 1;
-  offset: number;
-  limit: number;
+  offset?: number;
+  limit?: number;
 };
 
 type ArticleSort = {
@@ -87,6 +87,8 @@ export class Database extends Dexie {
       query = this.articles.where('isArchived').equals(isArchived);
     } else if (isFavorite !== undefined) {
       query = this.articles.where('isFavorite').equals(isArchived);
+    } else {
+      query = this.articles.toCollection();
     }
 
     if (Array.isArray(ids)) {
