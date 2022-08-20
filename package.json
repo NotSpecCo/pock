@@ -48,7 +48,7 @@
   "dependencies": {
     "date-fns": "^2.29.2",
     "dexie": "^3.2.2",
-    "onyx-ui": "^0.12.0",
+    "onyx-ui": "^0.13.0",
     "sirv-cli": "^1.0.0",
     "svelte-icons": "^2.1.0",
     "svelte-spa-router": "^3.3.0"

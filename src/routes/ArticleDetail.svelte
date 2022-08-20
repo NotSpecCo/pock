@@ -71,7 +71,13 @@
                 }}
               />
             {/each}
-            <Button title="Add Tag" navi={{ itemId: 'btnAddTag' }} />
+            <Button
+              title="Manage Tags"
+              navi={{
+                itemId: 'btnManageTag',
+                onSelect: () => push(`/articles/${params.articleId}/tags`),
+              }}
+            />
           {/if}
         {:catch error}
           <Typography align="center">Failed to load article</Typography>

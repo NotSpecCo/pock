@@ -12,7 +12,7 @@
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
   import FaSync from 'svelte-icons/fa/FaSync.svelte';
-  import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte';
+  import MdError from 'svelte-icons/md/MdError.svelte';
   import { replace } from 'svelte-spa-router';
   import { App } from '../services/app';
 
@@ -35,7 +35,7 @@
       .catch((err) => {
         console.error('Sync failed!', err);
         syncStatus = 'error';
-        Onyx.toaster.show({ icon: MdErrorOutline, type: 'error', title: `Sync failed!` });
+        Onyx.toaster.show({ icon: MdError, type: 'error', title: `Sync failed!` });
       });
   }
 

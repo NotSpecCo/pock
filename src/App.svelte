@@ -7,6 +7,7 @@
   import AppMenu from './components/AppMenu.svelte';
   import AppSettings from './routes/AppSettings.svelte';
   import ArticleDetail from './routes/ArticleDetail.svelte';
+  import ArticleTagger from './routes/ArticleTagger.svelte';
   import Filter from './routes/Filter.svelte';
   import Home from './routes/Home.svelte';
   import LogIn from './routes/LogIn.svelte';
@@ -32,6 +33,7 @@
     '/tags': Tags,
     '/tags/:tagId': ViewTag,
     '/articles/:articleId': ArticleDetail,
+    '/articles/:articleId/tags': ArticleTagger,
     '/settings/:cardId': AppSettings,
     '*': Redirect,
   };
