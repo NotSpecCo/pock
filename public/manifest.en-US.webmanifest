@@ -3,7 +3,9 @@
   "name": "Pock",
   "id": "pock",
   "short_name": "Pock",
-  "categories": ["entertainment"],
+  "categories": [
+    "entertainment"
+  ],
   "description": "A Pocket client for KaiOS",
   "theme_color": "#ef3e56",
   "background_color": "#ffffff",
