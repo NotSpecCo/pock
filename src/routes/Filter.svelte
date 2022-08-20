@@ -16,7 +16,7 @@
   import type { Article } from '../models';
   import { Articles } from '../services/articles';
 
-  type Filter = 'recent' | 'archived' | 'favorites';
+  type Filter = 'recent' | 'archive' | 'favorites';
 
   registerView({});
 
@@ -28,8 +28,8 @@
 
   async function getData(filterId?: Filter) {
     switch (filterId) {
-      case 'archived':
-        title = 'Archived';
+      case 'archive':
+        title = 'Archive';
         accentTextKey = 'updatedAt';
         getArticles = Articles.query({ isArchived: 1 }, { sortKey: 'updatedAt', sortDir: 'desc' });
         break;
@@ -37,14 +37,14 @@
         title = 'Favorites';
         accentTextKey = 'favoritedAt';
         getArticles = Articles.query(
-          { isFavorite: 1 },
+          { isFavorite: 1, isArchived: 0 },
           { sortKey: 'favoritedAt', sortDir: 'desc' }
         );
         break;
       case 'recent':
         title = 'Recent';
         accentTextKey = 'createdAt';
-        getArticles = Articles.query({}, { sortKey: 'createdAt', sortDir: 'desc' });
+        getArticles = Articles.query({ isArchived: 0 }, { sortKey: 'createdAt', sortDir: 'desc' });
         break;
       default:
         getArticles = Promise.resolve([]);

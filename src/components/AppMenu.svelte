@@ -25,8 +25,8 @@
   const items: MenuItem[] = user
     ? [
         { id: 'recent', text: 'Recent', route: `/filter/recent`, icon: FaRegClock },
-        { id: 'archived', text: 'Archived', route: `/filter/archived`, icon: FaArchive },
         { id: 'favorites', text: 'Favorites', route: `/filter/favorites`, icon: FaRegStar },
+        { id: 'archive', text: 'Archive', route: `/filter/archive`, icon: FaArchive },
         { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
