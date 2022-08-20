@@ -1,3 +1,13 @@
+# [1.2.0](https://github.com/garredow/pock/compare/v1.1.0...v1.2.0) (2022-08-20)
+
+
+### Features
+
+* add article context menu actions ([f8056cb](https://github.com/garredow/pock/commit/f8056cb5ad57f8c352a440855f7263dd1d85c8e4))
+* add better sync status messages ([b4cdd0a](https://github.com/garredow/pock/commit/b4cdd0a0581d91c7db01c4d05578e70fd98ecf0c))
+* add initial tag support ([ddafe5b](https://github.com/garredow/pock/commit/ddafe5bb0ce49ef28bf7abc15c47224c8b00874c))
+* improve filters ([32c7dad](https://github.com/garredow/pock/commit/32c7dadda9aa8b3676b177eeb5679f95801fd593))
+
 # [1.1.0](https://github.com/garredow/pock/compare/v1.0.0...v1.1.0) (2022-08-20)
 
 
