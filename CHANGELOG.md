@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/garredow/pock/compare/v1.2.0...v1.3.0) (2022-08-20)
+
+
+### Bug Fixes
+
+* **routing:** fix route params ([135ed85](https://github.com/garredow/pock/commit/135ed85d3163342ea943eff4911c0faa9dea39bd))
+
+
+### Features
+
+* add basic article detail viewer ([da010f4](https://github.com/garredow/pock/commit/da010f48108c9f3d58f06c8ece1ee8e6437ce89e))
+
 # [1.2.0](https://github.com/garredow/pock/compare/v1.1.0...v1.2.0) (2022-08-20)
 
 
