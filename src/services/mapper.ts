@@ -7,7 +7,7 @@ export function toArticle(source: PocketArticle): Article {
     title: source.resolved_title,
     excerpt: source.excerpt,
     wordCount: Number(source.word_count),
-    timeToRead: Number(source.time_to_read),
+    timeToRead: source.time_to_read,
     imageUrl: source.top_image_url,
     isArchived: source.status === '1' ? 1 : 0,
     isFavorite: Number(source.favorite) as 0 | 1,

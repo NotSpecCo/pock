@@ -40,8 +40,6 @@
   }
 
   onMount(async () => {
-    // replace('/filter/recent');
-    // return;
     await sync();
     updateView({ dataStatus: DataStatus.Loaded });
   });
