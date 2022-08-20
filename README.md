@@ -1,6 +1,10 @@
-# pock
+# Pock
 
-A simple starter template for building a KaiOS app using Svelte and TypeScript.
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/garredow/pock/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/garredow/pock/tree/main)
+
+A Pocket client for KaiOS.
+
+![Device frames](/promo/banner.png?raw=true)
 
 ### Development and testing
 
