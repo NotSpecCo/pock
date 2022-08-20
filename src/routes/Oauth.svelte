@@ -14,7 +14,7 @@
 
   onMount(async () => {
     await AuthClient.getAccessToken().catch((err) => console.log('getAccessToken err', err));
-    // window.close();
+    window.close();
   });
 
   onMount(async () => {

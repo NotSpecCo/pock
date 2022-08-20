@@ -22,8 +22,9 @@
       console.log('user', user);
 
       if (user?.username) {
+        AuthClient.user = user;
         clearInterval(timer);
-        replace('/');
+        replace('/sync');
       }
     }, 1000);
   }

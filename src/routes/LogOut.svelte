@@ -9,12 +9,12 @@
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
   import { replace } from 'svelte-spa-router';
-  import { System } from '../services/system';
+  import { App } from '../services/app';
 
   registerView({});
 
   onMount(async () => {
-    await System.logout();
+    await App.logout();
     replace('/login');
     updateView({ dataStatus: DataStatus.Loaded });
   });
@@ -26,7 +26,7 @@
       <CardHeader title="Pock" />
       <CardContent>
         <div class="logo">
-          <img src="/images/icon_112.png" alt="" />
+          <img src="/images/icon_128.png" alt="" />
         </div>
         <Typography align="center" padding="both">Logging out...</Typography>
       </CardContent>

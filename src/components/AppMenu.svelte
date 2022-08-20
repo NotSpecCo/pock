@@ -10,6 +10,8 @@
   import FaRegClock from 'svelte-icons/fa/FaRegClock.svelte';
   import FaRegStar from 'svelte-icons/fa/FaRegStar.svelte';
   import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte';
+  import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte';
+  import FaSync from 'svelte-icons/fa/FaSync.svelte';
   import FaTags from 'svelte-icons/fa/FaTags.svelte';
   import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
   import { push } from 'svelte-spa-router';
@@ -30,6 +32,8 @@
         { id: 'archive', text: 'Archive', route: `/filter/archive`, icon: FaArchive },
         { id: 'tags', text: 'View Tags', route: `/tags`, icon: FaTags },
         { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
+        { id: 'sync', text: 'Sync', route: `/sync`, icon: FaSync },
+        { id: 'logout', text: 'Log Out', route: `/logout`, icon: FaSignOutAlt },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
 </script>

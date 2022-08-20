@@ -1,4 +1,5 @@
 import type { ArticleTagMap } from '../models';
+import { AuthClient } from './authClient';
 import { Database } from './database';
 import { PerfLogger } from './perfLogger';
 import { Pocket } from './pocket';
@@ -8,6 +9,12 @@ const database = new Database();
 
 export class App {
   static isSyncing = false;
+
+  static async logout(): Promise<void> {
+    await database.delete();
+    AuthClient.logout();
+    localStorage.clear();
+  }
 
   static async sync(): Promise<number> {
     if (this.isSyncing) return;

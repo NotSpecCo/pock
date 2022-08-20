@@ -67,7 +67,9 @@
   onMount(async () => {
     KaiAds.startListening();
 
-    if (!AuthClient.user) {
+    if ($location === '/oauth') return;
+
+    if (!AuthClient.user?.username) {
       replace(`/login`);
       return;
     }

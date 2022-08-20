@@ -50,7 +50,7 @@ export class AuthClient {
     return this._user || Storage.getItem('pock_authenticated_user') || null;
   }
 
-  private static set user(val: AuthenticatedUser | null) {
+  public static set user(val: AuthenticatedUser | null) {
     this._user = val;
     Storage.setItem('pock_authenticated_user', val);
   }
@@ -88,7 +88,7 @@ export class AuthClient {
   public static async buildLoginUrl(): Promise<string> {
     await this.getRequestToken();
 
-    const url = this.buildApiUrl('/auth/authorize');
+    const url = new URL('https://getpocket.com/auth/authorize');
     url.searchParams.append('request_token', this.user.requestToken);
     url.searchParams.append('redirect_uri', this.config.redirectUri);
     url.searchParams.append('mobile', '1');
@@ -115,7 +115,6 @@ export class AuthClient {
       username: tokens.username,
       accessToken: tokens.access_token,
     };
-    console.log('this.user', this.user);
   }
 
   // HTTP Methods
