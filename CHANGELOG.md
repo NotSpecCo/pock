@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/garredow/pock/compare/v1.4.0...v1.4.1) (2022-08-20)
+
+
+### Bug Fixes
+
+* fix login flow ([0ad9c23](https://github.com/garredow/pock/commit/0ad9c23aeed62bdf7de1373b980084c5f50b25a1))
+
 # [1.4.0](https://github.com/garredow/pock/compare/v1.3.0...v1.4.0) (2022-08-20)
 
 
