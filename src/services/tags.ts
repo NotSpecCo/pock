@@ -17,6 +17,7 @@ export class Tags {
   static async delete(id: string): Promise<void> {
     await pocket.deleteTag(id);
     await database.deleteTag(id);
+    await database.deleteArticleTagsByTagId(id);
   }
 
   static async deleteAll(): Promise<void> {

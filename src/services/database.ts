@@ -174,6 +174,12 @@ export class Database extends Dexie {
     PerfLogger.stop('database.deleteAllArticleTags');
   }
 
+  public async deleteArticleTagsByTagId(tagId: string): Promise<void> {
+    PerfLogger.start('database.deleteArticleTagsByTagId');
+    await this.articleTags.where({ tagId }).delete();
+    PerfLogger.stop('database.deleteArticleTagsByTagId');
+  }
+
   public async deleteArticleTagsByItemId(itemId: string): Promise<void> {
     PerfLogger.start('database.deleteArticleTagsByItemId');
     await this.articleTags.where({ itemId }).delete();
