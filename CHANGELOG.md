@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/garredow/pock/compare/v1.0.0...v1.1.0) (2022-08-20)
+
+
+### Features
+
+* add filter views ([f99d18c](https://github.com/garredow/pock/commit/f99d18c274a251d222a3e0ce7644f4b562d99c6f))
+* add recent articles view ([88e59ad](https://github.com/garredow/pock/commit/88e59ad85804f073b42d0c6878746bada1b5d1e6))
+
 # 1.0.0 (2022-08-20)
 
 
