@@ -1,0 +1,36 @@
+{
+  "id": "dev.nothing.pock",
+  "name": "Pock",
+  "description": "A Pocket client for KaiOS",
+  "version": "1.0.0",
+  "launch_path": "/index.html",
+  "icons": {
+    "128": "/images/icon_128.png",
+    "112": "/images/icon_112.png",
+    "56": "/images/icon_56.png"
+  },
+  "theme_color": "#ef3e56",
+  "developer": {
+    "name": "Garrett Downs",
+    "url": "https://nothing.dev"
+  },
+  "type": "privileged",
+  "redirects": [
+    {
+      "from": "https://pock.nothing.dev/oauth",
+      "to": "/index.html"
+    }
+  ],
+  "permissions": {
+    "systemXHR": {
+      "description": "Required to communicate with Pocket and other vital functions."
+    }
+  },
+  "locales": {
+    "en-US": {
+      "name": "Pock",
+      "description": "A Pocket client for KaiOS"
+    }
+  },
+  "default_locale": "en-US"
+}

@@ -1,0 +1,51 @@
+{
+  "lang": "en-US",
+  "name": "Pock",
+  "id": "pock",
+  "short_name": "Pock",
+  "categories": ["entertainment"],
+  "description": "A Pocket client for KaiOS",
+  "theme_color": "#ef3e56",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/images/icon_128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/images/icon_112.png",
+      "type": "image/png",
+      "sizes": "112x112"
+    },
+    {
+      "src": "/images/icon_56.png",
+      "type": "image/png",
+      "sizes": "56x56"
+    }
+  ],
+  "start_url": "/index.html",
+  "orientation": "portrait-primary",
+  "b2g_features": {
+    "version": "1.0.0",
+    "subtitle": "A Pocket client for KaiOS",
+    "permissions": {
+      "systemXHR": {
+        "description": "Required to communicate with Pocket and other vital functions."
+      }
+    },
+    "type": "signed",
+    "focus_color": "#ef3e56",
+    "origin": "http://pock.localhost",
+    "developer": {
+      "name": "Garrett Downs",
+      "url": "https://nothing.dev"
+    },
+    "redirects": [
+      {
+        "from": "https://pock.nothing.dev/oauth",
+        "to": "/index.html"
+      }
+    ]
+  }
+}
