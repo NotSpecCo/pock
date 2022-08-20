@@ -7,11 +7,11 @@
   import Router, { location, pop, replace } from 'svelte-spa-router';
   import AppMenu from './components/AppMenu.svelte';
   import AppSettings from './routes/AppSettings.svelte';
+  import Filter from './routes/Filter.svelte';
   import Home from './routes/Home.svelte';
   import LogIn from './routes/LogIn.svelte';
   import LogOut from './routes/LogOut.svelte';
   import Oauth from './routes/Oauth.svelte';
-  import Recent from './routes/Recent.svelte';
   import Redirect from './routes/Redirect.svelte';
   import { Articles } from './services/articles';
   import { AuthClient } from './services/authClient';
@@ -25,7 +25,7 @@
     '/login': LogIn,
     '/logout': LogOut,
     '/oauth': Oauth,
-    '/recent': Recent,
+    '/filter/:filterId': Filter,
     '/settings/:cardId': AppSettings,
     '*': Redirect,
   };

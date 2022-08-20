@@ -10,11 +10,39 @@
   import { DataStatus } from 'onyx-ui/enums';
   import { registerView, updateView } from 'onyx-ui/stores/view';
   import { onMount } from 'svelte';
+  import { params } from 'svelte-spa-router';
+  import type { Article } from '../models';
   import { Articles } from '../services/articles';
+
+  type Filter = 'recent' | 'archived' | 'favorites' | 'unknown';
 
   registerView({});
 
-  const getArticles = Articles.query({}, { sortKey: 'updatedAt', sortDir: 'desc' });
+  let title = '';
+  let getArticles: Promise<Article[]>;
+
+  $: {
+    const filterId: Filter = ($params?.filterId as Filter) ?? 'unknown';
+    switch (filterId) {
+      case 'archived':
+        title = 'Archived';
+        getArticles = Articles.query({ isArchived: 1 }, { sortKey: 'updatedAt', sortDir: 'desc' });
+        break;
+      case 'favorites':
+        title = 'Favorites';
+        getArticles = Articles.query(
+          { isFavorite: 1 },
+          { sortKey: 'favoritedAt', sortDir: 'desc' }
+        );
+        break;
+      case 'recent':
+        title = 'Recent';
+        getArticles = Articles.query({}, { sortKey: 'updatedAt', sortDir: 'desc' });
+        break;
+      default:
+        getArticles = Promise.resolve([]);
+    }
+  }
 
   onMount(async () => {
     await getArticles;
@@ -25,7 +53,7 @@
 <View>
   <ViewContent>
     <Card>
-      <CardHeader title="Recent" />
+      <CardHeader {title} />
       <CardContent>
         {#await getArticles}
           <Typography align="center">Loading...</Typography>

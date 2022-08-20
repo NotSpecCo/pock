@@ -14,7 +14,15 @@ type ArticleQuery = {
 };
 
 type ArticleSort = {
-  sortKey: 'id' | 'timeToRead' | 'isArchived' | 'isFavorite' | 'createdAt' | 'updatedAt' | 'readAt';
+  sortKey:
+    | 'id'
+    | 'timeToRead'
+    | 'isArchived'
+    | 'isFavorite'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'readAt'
+    | 'favoritedAt';
   sortDir: 'asc' | 'desc';
 };
 

@@ -1,11 +1,14 @@
 <script lang="ts">
+  import Divider from 'onyx-ui/components/divider/Divider.svelte';
   import ListItem from 'onyx-ui/components/list/ListItem.svelte';
   import NavGroup from 'onyx-ui/components/nav/NavGroup.svelte';
   import { IconSize, ViewState } from 'onyx-ui/enums';
   import { Onyx } from 'onyx-ui/services';
   import { updateView } from 'onyx-ui/stores/view';
   import { getShortcutFromIndex } from 'onyx-ui/utils/getShortcutFromIndex';
+  import FaArchive from 'svelte-icons/fa/FaArchive.svelte';
   import FaRegClock from 'svelte-icons/fa/FaRegClock.svelte';
+  import FaRegStar from 'svelte-icons/fa/FaRegStar.svelte';
   import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte';
   import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
   import { push } from 'svelte-spa-router';
@@ -21,7 +24,9 @@
   };
   const items: MenuItem[] = user
     ? [
-        { id: 'recent', text: 'Recent', route: `/recent`, icon: FaRegClock },
+        { id: 'recent', text: 'Recent', route: `/filter/recent`, icon: FaRegClock },
+        { id: 'archived', text: 'Archived', route: `/filter/archived`, icon: FaArchive },
+        { id: 'favorites', text: 'Favorites', route: `/filter/favorites`, icon: FaRegStar },
         { id: 'settings', text: 'Settings', route: `/settings/display`, icon: IoIosSettings },
       ]
     : [{ id: 'login', text: 'Log In', route: '/login', icon: FaSignInAlt }];
@@ -33,7 +38,8 @@
     <div class="app-name">Pock</div>
   </div>
   <div class="scroller" data-nav-scroller>
-    {#each items as item, i}
+    <Divider title="Filters" />
+    {#each items.slice(0, 3) as item, i}
       <ListItem
         icon={item.icon}
         imageSize={IconSize.Smallest}
@@ -41,6 +47,26 @@
         navi={{
           itemId: item.id,
           shortcutKey: getShortcutFromIndex(i),
+          onSelect: () => {
+            Onyx.appMenu.close();
+            if (window.location.hash.startsWith(`#${item.route}`)) {
+              updateView({ viewing: ViewState.Card });
+              return;
+            }
+            push(item.route);
+          },
+        }}
+      />
+    {/each}
+    <Divider title="System" />
+    {#each items.slice(3) as item, i}
+      <ListItem
+        icon={item.icon}
+        imageSize={IconSize.Smallest}
+        primaryText={item.text}
+        navi={{
+          itemId: item.id,
+          shortcutKey: getShortcutFromIndex(i + 3),
           onSelect: () => {
             Onyx.appMenu.close();
             if (window.location.hash.startsWith(`#${item.route}`)) {

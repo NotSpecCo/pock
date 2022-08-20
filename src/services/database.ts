@@ -11,7 +11,15 @@ type ArticleQuery = {
 };
 
 type ArticleSort = {
-  sortKey: 'id' | 'timeToRead' | 'isArchived' | 'isFavorite' | 'createdAt' | 'updatedAt' | 'readAt';
+  sortKey:
+    | 'id'
+    | 'timeToRead'
+    | 'isArchived'
+    | 'isFavorite'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'readAt'
+    | 'favoritedAt';
   sortDir: 'asc' | 'desc';
 };
 
@@ -22,7 +30,8 @@ export class Database extends Dexie {
     super('pock');
 
     this.version(1).stores({
-      articles: '&id, timeToRead, isArchived, isFavorite, createdAt, updatedAt, readAt',
+      articles:
+        '&id, timeToRead, isArchived, isFavorite, createdAt, updatedAt, readAt, favoritedAt',
     });
 
     this.articles = this.table('articles');
@@ -86,7 +95,7 @@ export class Database extends Dexie {
     } else if (isArchived !== undefined) {
       query = this.articles.where('isArchived').equals(isArchived);
     } else if (isFavorite !== undefined) {
-      query = this.articles.where('isFavorite').equals(isArchived);
+      query = this.articles.where('isFavorite').equals(isFavorite);
     } else {
       query = this.articles.toCollection();
     }
